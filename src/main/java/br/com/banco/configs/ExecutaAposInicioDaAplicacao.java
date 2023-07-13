@@ -1,5 +1,7 @@
 package br.com.banco.configs;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -17,14 +19,17 @@ public class ExecutaAposInicioDaAplicacao implements ApplicationRunner {
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
 		
-		ContaEntity conta01 = new ContaEntity();
-		ContaEntity conta02 = new ContaEntity();
+		List<ContaEntity> listaContas = contaService.listaTodas();
 		
-		conta01.setNomeResponsavel("Fulano");
-		conta02.setNomeResponsavel("Sicrano");
-		
-		contaService.criaConta(conta01);
-		contaService.criaConta(conta02);
-		
+		if(listaContas.isEmpty()) {
+			ContaEntity conta01 = new ContaEntity();
+			ContaEntity conta02 = new ContaEntity();
+			
+			conta01.setNomeResponsavel("Fulano");
+			conta02.setNomeResponsavel("Sicrano");
+			
+			contaService.criaConta(conta01);
+			contaService.criaConta(conta02);
+		}
 	}
 }

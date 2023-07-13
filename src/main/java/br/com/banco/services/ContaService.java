@@ -1,5 +1,9 @@
 package br.com.banco.services;
 
+import java.util.List;
+
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +16,12 @@ public class ContaService {
 	@Autowired
 	private ContaRepository contaRepository;
 	
+	@Transactional
 	public ContaEntity criaConta(ContaEntity conta) {
 		return contaRepository.save(conta);
+	}
+
+	public List<ContaEntity> listaTodas() {
+		return contaRepository.findAll();
 	}
 }
