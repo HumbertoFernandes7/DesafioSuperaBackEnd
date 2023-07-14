@@ -22,5 +22,8 @@ public class ContaEntity {
 	private Long id;
 	
 	@Column(name = "nomeResponsavel")
-	private String nomeResponsavel;
+	private String nomeResponsavel; 
+	
+	@Column(name = "saldo")
+	private Float saldo;
 }

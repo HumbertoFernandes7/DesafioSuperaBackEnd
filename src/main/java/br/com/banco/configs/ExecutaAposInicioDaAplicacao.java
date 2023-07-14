@@ -26,7 +26,9 @@ public class ExecutaAposInicioDaAplicacao implements ApplicationRunner {
 			ContaEntity conta02 = new ContaEntity();
 			
 			conta01.setNomeResponsavel("Fulano");
+			conta01.setSaldo((float) 0.00);
 			conta02.setNomeResponsavel("Sicrano");
+			conta02.setSaldo((float) 0.0);
 			
 			contaService.criaConta(conta01);
 			contaService.criaConta(conta02);

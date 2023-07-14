@@ -28,6 +28,9 @@ public class TransferenciaService {
 	@Transactional
 	public TransferenciaEntity realizaTransferencia(TransferenciaEntity transferenciaEntity, Long contaId) {
 		ContaEntity contaEncontrada = contaService.buscaContaPeloId(contaId);
+		
+		contaEncontrada.setSaldo(contaEncontrada.getSaldo() + transferenciaEntity.getValor());
+		
 		transferenciaEntity.setContaId(contaEncontrada);
 		transferenciaEntity.setDataTransferencia(LocalDate.now());
 		return transferenciaRepository.save(transferenciaEntity);
