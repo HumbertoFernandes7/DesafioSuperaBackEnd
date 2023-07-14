@@ -24,4 +24,8 @@ public class ContaService {
 	public List<ContaEntity> listaTodas() {
 		return contaRepository.findAll();
 	}
+
+	public ContaEntity buscaContaPeloId(Long contaId) {
+		return contaRepository.findById(contaId).orElseThrow();
+	}
 }
