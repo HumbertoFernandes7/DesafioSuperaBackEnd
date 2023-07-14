@@ -14,4 +14,6 @@ public interface TransferenciaRepository extends JpaRepository<TransferenciaEnti
 
 	List<TransferenciaEntity> findByDataTransferencia(LocalDate localDate);
 
+	List<TransferenciaEntity> findByNomeOperadorTransacao(String string);
+
 }

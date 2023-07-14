@@ -44,4 +44,8 @@ public class TransferenciaService {
 				.findByDataTransferencia(localDate);
 		return transferenciasEncontradas;
 	}
+
+	public List<TransferenciaEntity> buscaTransferenciasPeloNomeOperador(String string) {
+		return transferenciaRepository.findByNomeOperadorTransacao(string);
+	}
 }

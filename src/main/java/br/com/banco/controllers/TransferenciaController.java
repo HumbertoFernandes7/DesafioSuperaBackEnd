@@ -15,6 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.banco.converts.TransferenciaConvert;
 import br.com.banco.dtos.inputs.DataTransferenciaInput;
+import br.com.banco.dtos.inputs.NomeOperadorInput;
 import br.com.banco.dtos.inputs.TransferenciaInput;
 import br.com.banco.dtos.outputs.TransferenciaOutput;
 import br.com.banco.entities.TransferenciaEntity;
@@ -54,10 +55,20 @@ public class TransferenciaController {
 		List<TransferenciaEntity> transferenciasEntity = transferenciaService.buscaTransferenciasPeloContaId(id);
 		return transferenciaConvert.ListEntityToListOutput(transferenciasEntity);
 	}
-	
-	@GetMapping("data")
-	public List<TransferenciaOutput> buscaTransferenciasPelaDataRealizada(@RequestBody DataTransferenciaInput dataTransferenciaInput) {
-		List<TransferenciaEntity> transferenciasEntity = transferenciaService.buscaTransferenciasPelaDataRealizada(dataTransferenciaInput.getData());
+
+	@GetMapping("/data")
+	public List<TransferenciaOutput> buscaTransferenciasPelaDataRealizada(
+			@RequestBody DataTransferenciaInput dataTransferenciaInput) {
+		List<TransferenciaEntity> transferenciasEntity = transferenciaService
+				.buscaTransferenciasPelaDataRealizada(dataTransferenciaInput.getData());
+		return transferenciaConvert.ListEntityToListOutput(transferenciasEntity);
+	}
+
+	@GetMapping("/nome")
+	public List<TransferenciaOutput> buscaTransferenciasPeloNomeOperador(
+			@RequestBody NomeOperadorInput nomeOperadorInput) {
+		List<TransferenciaEntity> transferenciasEntity = transferenciaService
+				.buscaTransferenciasPeloNomeOperador(nomeOperadorInput.getNomeOperadorTransacao());
 		return transferenciaConvert.ListEntityToListOutput(transferenciasEntity);
 	}
 }
