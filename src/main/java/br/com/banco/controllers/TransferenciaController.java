@@ -39,11 +39,22 @@ public class TransferenciaController {
 		return transferenciasConvertida;
 	}
 
-	@PostMapping
-	public ResponseEntity<TransferenciaOutput> realizaTransferencia(@RequestBody TransferenciaInput transferenciaInput,
+	@PostMapping("/deposito")
+	public ResponseEntity<TransferenciaOutput> realizaTransferenciaDeposito(@RequestBody TransferenciaInput transferenciaInput,
 			UriComponentsBuilder uriBuilder) {
 		TransferenciaEntity transferenciaEntity = transferenciaConvert.InputToEntity(transferenciaInput);
-		TransferenciaEntity transferenciaCadastrada = transferenciaService.realizaTransferencia(transferenciaEntity,
+		TransferenciaEntity transferenciaCadastrada = transferenciaService.realizaTransferenciaDeposito(transferenciaEntity,
+				transferenciaInput.getContaId());
+		URI uri = uriBuilder.path("/transferencias").buildAndExpand(transferenciaCadastrada.getId()).toUri();
+		TransferenciaOutput transferenciaConvertida = transferenciaConvert.entityToOutput(transferenciaCadastrada);
+		return ResponseEntity.created(uri).body(transferenciaConvertida);
+	}
+	
+	@PostMapping("/retirada")
+	public ResponseEntity<TransferenciaOutput> realizaTransferenciaRetirada(@RequestBody TransferenciaInput transferenciaInput,
+			UriComponentsBuilder uriBuilder) {
+		TransferenciaEntity transferenciaEntity = transferenciaConvert.InputToEntity(transferenciaInput);
+		TransferenciaEntity transferenciaCadastrada = transferenciaService.realizaTransferenciaRetirada(transferenciaEntity,
 				transferenciaInput.getContaId());
 		URI uri = uriBuilder.path("/transferencias").buildAndExpand(transferenciaCadastrada.getId()).toUri();
 		TransferenciaOutput transferenciaConvertida = transferenciaConvert.entityToOutput(transferenciaCadastrada);

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.banco.entities.ContaEntity;
 import br.com.banco.entities.TransferenciaEntity;
+import br.com.banco.exceptions.TransferenciaException;
 import br.com.banco.repositories.TransferenciaRepository;
 
 @Service
@@ -26,14 +27,27 @@ public class TransferenciaService {
 	}
 
 	@Transactional
-	public TransferenciaEntity realizaTransferencia(TransferenciaEntity transferenciaEntity, Long contaId) {
+	public TransferenciaEntity realizaTransferenciaDeposito(TransferenciaEntity transferenciaEntity, Long contaId) {
 		ContaEntity contaEncontrada = contaService.buscaContaPeloId(contaId);
-		
-		contaEncontrada.setSaldo(contaEncontrada.getSaldo() + transferenciaEntity.getValor());
-		
 		transferenciaEntity.setContaId(contaEncontrada);
+		contaEncontrada.setSaldo(contaEncontrada.getSaldo() + transferenciaEntity.getValor());
 		transferenciaEntity.setDataTransferencia(LocalDate.now());
+		transferenciaEntity.setTipo("Deposito");
 		return transferenciaRepository.save(transferenciaEntity);
+	}
+
+	@Transactional
+	public TransferenciaEntity realizaTransferenciaRetirada(TransferenciaEntity transferenciaEntity, Long contaId) {
+		ContaEntity contaEncontrada = contaService.buscaContaPeloId(contaId);
+		transferenciaEntity.setContaId(contaEncontrada);
+		if (contaEncontrada.getSaldo() > transferenciaEntity.getValor()) {
+			contaEncontrada.setSaldo(contaEncontrada.getSaldo() - transferenciaEntity.getValor());
+			transferenciaEntity.setDataTransferencia(LocalDate.now());
+			transferenciaEntity.setTipo("Retirada");
+			return transferenciaRepository.save(transferenciaEntity);
+		} else {
+			throw new TransferenciaException("Erro na transferência: saldo insuficiente.");
+		}
 	}
 
 	public List<TransferenciaEntity> buscaTransferenciasPeloContaId(Long id) {
